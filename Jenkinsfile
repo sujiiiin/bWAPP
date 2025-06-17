@@ -43,7 +43,8 @@ pipeline {
                                 echo "[+] 선택된 이미지 태그: \$IMAGE_TAG" && \\
 
                                 echo "[+] CDXGEN 실행"
-                                docker run --rm -v \$(pwd):/app ghcr.io/cyclonedx/cdxgen\${IMAGE_TAG:+-${IMAGE_TAG}}:latest -o sbom.json && \\
+                                def image = IMAGE_TAG == "local" ? "cdxgen:latest" : "ghcr.io/cyclonedx/cdxgen-${IMAGE_TAG}:latest"
+                                docker run --rm -v \$(pwd):/app ${image} -o sbom.json
 
                                 echo "[+] Dependency-Track 업로드"
                                 /home/ec2-user/upload-sbom.sh ${repoName}
