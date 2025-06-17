@@ -16,11 +16,6 @@ pipeline {
             }
         }
 
-        stage('🔨 Build JAR') {
-            steps {
-                sh 'mvn clean package -DskipTests'
-            }
-        }
 
         stage('🚀 Generate SBOM via CDXGEN Docker') {
             steps {
