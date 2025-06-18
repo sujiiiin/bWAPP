@@ -42,11 +42,12 @@ pipeline {
                                 IMAGE_TAG=\$(cat /tmp/cdxgen_image_tag.txt) && \\
                                 echo "[+] 선택된 이미지 태그: \$IMAGE_TAG" && \\
 
-                                echo "[+] CDXGEN 실행"
-                                if [ "\$IMAGE_TAG" = "local" ]; then
-                                  docker run --rm -v \$(pwd):/app cdxgen:latest -o sbom.json
+                                if [ "\$IMAGE_TAG" = "java" ]; then
+                                  echo "[🚀] CDXGEN(Java) 도커 실행" && \\
+                                  docker run --rm -v \$(pwd):/app ghcr.io/cyclonedx/cdxgen-java:latest -o sbom.json
                                 else
-                                  docker run --rm -v \$(pwd):/app ghcr.io/cyclonedx/cdxgen-\$IMAGE_TAG:latest -o sbom.json
+                                  echo "[🚀] CDXGEN(CLI) 도커 실행" && \\
+                                  docker run --rm -v \$(pwd):/app ghcr.io/cyclonedx/cdxgen:latest -o sbom.json
                                 fi && \\
 
                                 echo "[+] Dependency-Track 업로드"
